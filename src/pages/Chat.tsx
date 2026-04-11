@@ -275,7 +275,7 @@ export default function Chat() {
   const loadChatList = async () => {
     try {
       const res = await axios.get(
-        `http://https://mahi-0iap.onrender.com:5000/api/conversations/${userData.id}`
+        `https://mahi-0iap.onrender.com/api/conversations/${userData.id}`
       );
       setChatList(res.data.chats || []);
     } catch (err) {
@@ -287,7 +287,7 @@ export default function Chat() {
   const loadMessages = async (conversationId: string) => {
     try {
       const res = await axios.get(
-        `http://https://mahi-0iap.onrender.com:5000/api/messages/conversation/${conversationId}`
+        `https://mahi-0iap.onrender.com/api/messages/conversation/${conversationId}`
       );
 
       const formatted: Msg[] = (res.data.messages || []).map((m: any) => {
