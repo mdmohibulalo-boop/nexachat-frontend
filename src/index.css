@@ -1,0 +1,109 @@
+/* ===============================
+   NexaChat Global Theme (FINAL)
+   Do NOT modify anything else
+================================ */
+
+/* Font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+/* Theme variables */
+:root {
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* Colors */
+  --bg-main: #0f172a;
+  --bg-card: #111827;
+
+  --primary: #2563eb;
+  --success: #22c55e;
+
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --border: #1f2937;
+
+  color-scheme: dark;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Links */
+a {
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: inherit;
+}
+a:hover {
+  opacity: 0.85;
+}
+
+/* Body */
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* Headings */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* Buttons */
+button {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 0.7em 1.3em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+button:hover {
+  border-color: var(--primary);
+}
+
+button:focus,
+button:focus-visible {
+  outline: none;
+  border-color: var(--primary);
+}
+/* ===============================
+   Auth Pages (Login / Signup)
+================================ */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at top,
+    rgba(37, 99, 235, 0.15),
+    transparent 60%
+  );
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--bg-card);
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
