@@ -915,19 +915,23 @@ borderRight: "1px solid #2a3942",
                   justifyContent: "center",
                 }}
               >
-                {searchResult.profilePic ? (
-                  <img
-                    src={"https://mahi-0iap.onrender.com" + searchResult.profilePic}
-                    alt="dp"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                ) : (
-                  <span style={{ fontSize: 16 }}>👤</span>
-                )}
+               {searchResult.profilePic ? (
+  <img
+    src={
+      searchResult.profilePic.startsWith("http")
+        ? searchResult.profilePic
+        : "https://mahi-0iap.onrender.com" + searchResult.profilePic
+    }
+    alt="dp"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+    }}
+  />
+) : (
+  <span style={{ fontSize: 16 }}>👤</span>
+)}
               </div>
 
               <div>
@@ -1005,14 +1009,18 @@ border: "none",
                       >
                         {chat.profilePic ? (
                           <img
-                            src={"https://mahi-0iap.onrender.com" + chat.profilePic}
-                            alt="dp"
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover",
-                            }}
-                          />
+  src={
+    chat.profilePic.startsWith("http")
+      ? chat.profilePic
+      : "https://mahi-0iap.onrender.com" + chat.profilePic
+  }
+  alt="dp"
+  style={{
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  }}
+/>
                         ) : (
                           <span style={{ fontSize: 16 }}>👤</span>
                         )}
@@ -1138,9 +1146,13 @@ border: "none",
                     flexShrink: 0,
                   }}
                 >
-                  {selectedUser.profilePic ? (
-                    <img
-                      src={"https://mahi-0iap.onrender.com" + selectedUser.profilePic}
+                 {selectedUser.profilePic ? (
+  <img
+    src={
+      selectedUser.profilePic.startsWith("http")
+        ? selectedUser.profilePic
+        : "https://mahi-0iap.onrender.com" + selectedUser.profilePic
+    }
                       alt="dp"
                       style={{
                         width: "100%",
