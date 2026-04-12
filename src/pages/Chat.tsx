@@ -917,7 +917,7 @@ borderRight: "1px solid #2a3942",
               >
                 {searchResult.profilePic ? (
                   <img
-                    src={searchResult.profilePic}
+                    src={"https://mahi-0iap.onrender.com" + searchResult.profilePic}
                     alt="dp"
                     style={{
                       width: "100%",
@@ -1005,7 +1005,7 @@ border: "none",
                       >
                         {chat.profilePic ? (
                           <img
-                            src={chat.profilePic}
+                            src={"https://mahi-0iap.onrender.com" + chat.profilePic}
                             alt="dp"
                             style={{
                               width: "100%",
@@ -1140,7 +1140,7 @@ border: "none",
                 >
                   {selectedUser.profilePic ? (
                     <img
-                      src={selectedUser.profilePic}
+                      src={"https://mahi-0iap.onrender.com" + selectedUser.profilePic}
                       alt="dp"
                       style={{
                         width: "100%",
