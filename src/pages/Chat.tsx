@@ -53,6 +53,12 @@ type Msg = {
 
 export default function Chat() {
   const userData = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const BASE_URL = "https://mahi-0iap.onrender.com";
+
+const getFullDP = (dp: string) => {
+  if (!dp) return "";
+  return dp.startsWith("http") ? dp : BASE_URL + dp;
+};
   const socketRef = useRef<Socket | null>(null);
 
   const navigate = useNavigate();
@@ -402,12 +408,12 @@ export default function Chat() {
 
     const socket = socketRef.current;
 
-    socket.emit("joinUser", {
-      userId: userData.id,
-      name: userData.name,
-      username: userData.username,
-    });
-
+  socket.emit("joinUser", {
+  userId: userData.id,
+  name: userData.name,
+  username: userData.username,
+  profilePic: getFullDP(userData.profilePic), // ✅ YE LINE ADD KAR
+});
     socket.off("onlineUsers");
     socket.off("receivePrivateMessage");
     socket.off("messageSent");
