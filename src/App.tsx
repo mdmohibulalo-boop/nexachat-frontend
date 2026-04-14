@@ -8,34 +8,38 @@ import Login from "./pages/Login";
 import Chat from "./pages/Chat";
 import Profile from "./pages/Profile";
 import PublicProfile from "./pages/PublicProfile";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword"; // ✅ ADD
 
 import Splash from "./components/Splash";
 
 function App() {
-  // 🔹 Splash loading state
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Splash timer
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // 2 seconds
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // 🔹 Show Splash first
   if (loading) {
     return <Splash />;
   }
 
-  // 🔹 Normal App Routes
   return (
     <>
       <Routes>
         <Route path="/" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+
+        {/* 🔥 FORGOT PASSWORD */}
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* 🔥 RESET PASSWORD */}
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* ✅ only ONE user profile route */}
         <Route path="/user/:id" element={<PublicProfile />} />

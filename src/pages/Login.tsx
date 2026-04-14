@@ -1,16 +1,14 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // ✅ ADD LINK
 
 export default function Login() {
   const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // ✅ message + type
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  // ✅ show/hide password
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -22,27 +20,22 @@ export default function Login() {
     setIsError(false);
 
     try {
-      const res = await axios.post("https://mahi-0iap.onrender.com/api/auth/login", {
-        emailOrUsername,
-        password,
-      });
+      const res = await axios.post(
+        "https://mahi-0iap.onrender.com/api/auth/login",
+        {
+          emailOrUsername,
+          password,
+        }
+      );
 
-      // ✅✅✅ MOST IMPORTANT
-      sessionStorage.setItem("token", res.data.token); // ✅ ADDED
+      sessionStorage.setItem("token", res.data.token);
       sessionStorage.setItem("user", JSON.stringify(res.data.user));
-
-      console.log("USER STORED IN SESSION:", res.data.user);
-      console.log("TOKEN STORED IN SESSION:", res.data.token);
 
       setMessage("Login Success 🎉");
       setIsError(false);
 
-      // ✅ better redirect
       navigate("/chat");
     } catch (err: any) {
-      console.log("LOGIN ERROR:", err?.response?.data);
-
-      // ✅ wrong password / wrong user message
       setMessage(err?.response?.data?.message || "Login Failed ❌");
       setIsError(true);
     }
@@ -60,10 +53,9 @@ export default function Login() {
           onChange={(e) => setEmailOrUsername(e.target.value)}
           style={{ padding: "8px", width: "250px" }}
         />
-        <br />
-        <br />
+        <br /><br />
 
-        {/* ✅ Password + show/hide */}
+        {/* Password + show/hide */}
         <div
           style={{
             width: "250px",
@@ -103,22 +95,28 @@ export default function Login() {
           </button>
         </div>
 
-        <br />
-        <br />
+        <br /><br />
 
         <button type="submit" style={{ padding: "10px 25px" }}>
           Login
         </button>
       </form>
 
-      {/* ✅ Message color */}
+      {/* 🔥 Forgot Password link */}
+      <p style={{ marginTop: "10px" }}>
+        <Link to="/forgot-password" style={{ color: "#00aaff" }}>
+          Forgot Password?
+        </Link>
+      </p>
+
+      {/* Message */}
       {message && (
         <p style={{ marginTop: "20px", color: isError ? "red" : "lightgreen" }}>
           {message}
         </p>
       )}
 
-      {/* ✅✅✅ Signup option added */}
+      {/* Signup */}
       <p style={{ marginTop: "20px", color: "#ddd", fontSize: 14 }}>
         Don’t have an account?{" "}
         <span
