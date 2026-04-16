@@ -65,6 +65,7 @@ const getFullDP = (dp: string) => {
 
   const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
   const [chatList, setChatList] = useState<ChatItem[]>([]);
+  const UNREAD_KEY = "unread_counts";
   const [selectedUser, setSelectedUser] = useState<SelectedUser | null>(null);
 
   const [message, setMessage] = useState("");
@@ -283,7 +284,13 @@ const getFullDP = (dp: string) => {
       const res = await axios.get(
         `https://mahi-0iap.onrender.com/api/conversations/${userData.id}`
       );
-      setChatList(res.data.chats || []);
+      const savedUnread = JSON.parse(localStorage.getItem(UNREAD_KEY) || "{}");
+      const chats = (res.data.chats || []).map((chat: any) => ({
+  ...chat,
+  unreadCount: savedUnread[chat.userId] || 0,
+}));
+
+setChatList(chats);
     } catch (err) {
       console.log("Chat list load error:", err);
       setChatList([]);
@@ -363,7 +370,7 @@ const getFullDP = (dp: string) => {
     closeDeleteConfirm();
 
     resetTextareaHeight();
-    loadChatList();
+   
   };
 
   const handleTyping = () => {
@@ -399,6 +406,8 @@ const getFullDP = (dp: string) => {
 
   useEffect(() => {
     if (!userData?.id) return;
+
+loadChatList();
 
     if (!socketRef.current) {
       socketRef.current = io("https://mahi-0iap.onrender.com", {
@@ -437,6 +446,26 @@ const getFullDP = (dp: string) => {
 
       bumpChatToTop(senderId, data.message);
 
+if (!isCurrentChat) {
+  setChatList((prev) => {
+    const updated = prev.map((chat) => {
+      if (chat.userId === senderId) {
+        const newCount = (chat.unreadCount || 0) + 1;
+
+        // 💾 save in localStorage
+        const saved = JSON.parse(localStorage.getItem(UNREAD_KEY) || "{}");
+        saved[senderId] = newCount;
+        localStorage.setItem(UNREAD_KEY, JSON.stringify(saved));
+
+        return { ...chat, unreadCount: newCount };
+      }
+      return chat;
+    });
+
+    return updated;
+  });
+}
+
       if (isCurrentChat) {
         setChatMessages((prev) => [
           ...prev,
@@ -461,7 +490,6 @@ const getFullDP = (dp: string) => {
         });
       }
 
-      setTimeout(() => loadChatList(), 250);
     };
 
     const handleMessageSent = ({ tempId, messageId, createdAt }: any) => {
@@ -503,7 +531,6 @@ const getFullDP = (dp: string) => {
         )
       );
 
-      setTimeout(() => loadChatList(), 200);
     };
 
     const handleTypingEvent = ({ fromUserId }: any) => {
@@ -556,7 +583,7 @@ const getFullDP = (dp: string) => {
 
     socket.on("messageDeleted", handleMessageDeleted);
 
-    loadChatList();
+  
   }, [userData?.id]);
 
   const selectedIsOnline =
@@ -587,6 +614,19 @@ const getFullDP = (dp: string) => {
       ...user,
       profilePic: user.profilePic || "",
     });
+    // 🔥 RESET UNREAD (UI + LOCAL)
+setChatList((prev) =>
+  prev.map((chat) =>
+    chat.userId === user.userId
+      ? { ...chat, unreadCount: 0 }
+      : chat
+  )
+);
+
+// 💾 remove from localStorage
+const saved = JSON.parse(localStorage.getItem(UNREAD_KEY) || "{}");
+delete saved[user.userId];
+localStorage.setItem(UNREAD_KEY, JSON.stringify(saved));
 
     setTypingUserId(null);
     setLastSeen(null);
@@ -601,7 +641,7 @@ const getFullDP = (dp: string) => {
 
     socket.emit("markSeen", { senderId: user.userId, receiverId: userData.id });
 
-    loadChatList();
+    
 
     setSearchResult(null);
     setSearchText("");
@@ -708,7 +748,7 @@ const getFullDP = (dp: string) => {
 
       setSelectedFile(null);
       setReplyingTo(null);
-      setTimeout(() => loadChatList(), 250);
+
       return;
     }
 
@@ -748,7 +788,6 @@ const getFullDP = (dp: string) => {
     setReplyingTo(null);
 
     setTimeout(() => resetTextareaHeight(), 0);
-    setTimeout(() => loadChatList(), 250);
   };
 
   const deleteForMe = (msg: Msg) => {
@@ -1597,7 +1636,6 @@ color: "#e9edef",
                   ]);
 
                   setReplyingTo(null);
-                  setTimeout(() => loadChatList(), 250);
                 }}
               />
 
